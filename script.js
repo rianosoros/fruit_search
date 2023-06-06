@@ -9,20 +9,38 @@ function search(str) {
 		let lowercaseFruit = fruitName.toLowerCase();
     	return lowercaseFruit.includes(userInput);
   });
-  //console.log(results);
+
+  if(str.length == 0){
+	delSuggestions();
+  }
+
+  console.log(results);
+  showSuggestions(results);
   return results;
 
  
 }
 
 function searchHandler(e) {
+	suggestions.innerHTML = '';
 	let currentInput = e.target.value;
 	search(currentInput);
+	
 }
 
-function showSuggestions(results, inputVal) {
+function showSuggestions(results) {  /*, inputVal) {*/
 
-	// TODO
+suggestions.innerHTML = '';
+results.forEach(function(result) {
+  let listItem = document.createElement('li');
+  listItem.textContent = result;
+  suggestions.appendChild(listItem);
+});
+
+};
+
+function delSuggestions(){
+	document.querySelector('.suggestions ul li').remove();
 }
 
 function useSuggestion(e) {
