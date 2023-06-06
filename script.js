@@ -21,6 +21,7 @@ function search(str) {
  
 }
 
+
 function searchHandler(e) {
 	suggestions.innerHTML = '';
 	let currentInput = e.target.value;
@@ -28,24 +29,33 @@ function searchHandler(e) {
 	
 }
 
-function showSuggestions(results) {  /*, inputVal) {*/
 
+function showSuggestions(results) {  /*, inputVal) {*/
 suggestions.innerHTML = '';
 results.forEach(function(result) {
   let listItem = document.createElement('li');
   listItem.textContent = result;
-  suggestions.appendChild(listItem);
-});
+  
+  	listItem.addEventListener('click', function(){
+  		useSuggestion(result)
+	});
+  
+  suggestions.appendChild(listItem);	
+	});
 
 };
+
+
 
 function delSuggestions(){
 	document.querySelector('.suggestions ul li').remove();
 }
 
-function useSuggestion(e) {
-	// TODO
+
+function useSuggestion(suggestion) {
+	input.value = suggestion;
 }
 
+
 input.addEventListener('keyup', searchHandler);
-suggestions.addEventListener('click', useSuggestion);
+//suggestions.addEventListener('click', useSuggestion);
