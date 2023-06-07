@@ -3,6 +3,7 @@ const suggestions = document.querySelector('.suggestions ul');
 
 const fruit = ['Apple', 'Apricot', 'Avocado 🥑', 'Banana', 'Bilberry', 'Blackberry', 'Blackcurrant', 'Blueberry', 'Boysenberry', 'Currant', 'Cherry', 'Coconut', 'Cranberry', 'Cucumber', 'Custard apple', 'Damson', 'Date', 'Dragonfruit', 'Durian', 'Elderberry', 'Feijoa', 'Fig', 'Gooseberry', 'Grape', 'Raisin', 'Grapefruit', 'Guava', 'Honeyberry', 'Huckleberry', 'Jabuticaba', 'Jackfruit', 'Jambul', 'Juniper berry', 'Kiwifruit', 'Kumquat', 'Lemon', 'Lime', 'Loquat', 'Longan', 'Lychee', 'Mango', 'Mangosteen', 'Marionberry', 'Melon', 'Cantaloupe', 'Honeydew', 'Watermelon', 'Miracle fruit', 'Mulberry', 'Nectarine', 'Nance', 'Olive', 'Orange', 'Clementine', 'Mandarine', 'Tangerine', 'Papaya', 'Passionfruit', 'Peach', 'Pear', 'Persimmon', 'Plantain', 'Plum', 'Pineapple', 'Pomegranate', 'Pomelo', 'Quince', 'Raspberry', 'Salmonberry', 'Rambutan', 'Redcurrant', 'Salak', 'Satsuma', 'Soursop', 'Star fruit', 'Strawberry', 'Tamarillo', 'Tamarind', 'Yuzu'];
 
+
 function search(str) {
 	let userInput = str.toLowerCase();
 	let results = fruit.filter(function(fruitName) {
@@ -14,19 +15,26 @@ function search(str) {
 	delSuggestions();
   }
 
-  console.log(results);
-  showSuggestions(results);
+  let boldInput = results.map(function(names) {
+    let bolded = names.replace(new RegExp(userInput, 'gi'), function(match) {
+      return '<strong>' + match + '</strong>';
+    });
+	return bolded;
+  });
+  
+  //console.log(boldInput);
+  //console.log(results);
+
+  showSuggestions(boldInput);
   return results;
 
- 
 }
 
 
 function searchHandler(e) {
 	suggestions.innerHTML = '';
 	let currentInput = e.target.value;
-	search(currentInput);
-	
+	search(currentInput);	
 }
 
 
@@ -34,7 +42,7 @@ function showSuggestions(results) {  /*, inputVal) {*/
 suggestions.innerHTML = '';
 results.forEach(function(result) {
   let listItem = document.createElement('li');
-  listItem.textContent = result;
+  listItem.innerHTML = result;
   
   	listItem.addEventListener('click', function(){
   		useSuggestion(result)
@@ -42,9 +50,7 @@ results.forEach(function(result) {
   
   suggestions.appendChild(listItem);	
 	});
-
 };
-
 
 
 function delSuggestions(){
@@ -53,9 +59,10 @@ function delSuggestions(){
 
 
 function useSuggestion(suggestion) {
-	input.value = suggestion;
+	input.value = suggestion.replace(/<\/?strong>/g, '');
+	suggestions.innerHTML = '';
 }
 
 
+
 input.addEventListener('keyup', searchHandler);
-//suggestions.addEventListener('click', useSuggestion);
